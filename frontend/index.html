@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sasta Notepad</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Sasta Notepad</h1>
+        <div>
+            <label>User ID: <input type="number" id="userId" value="1"></label>
+            <button onclick="loadFolders()">Load Folders</button>
+        </div>
+        <div id="folders"></div>
+        <div id="notes"></div>
+        <div id="note-detail"></div>
+    </div>
+    <script>
+        const api = '/users';
+        async function loadFolders() {
+            const userId = document.getElementById('userId').value;
+            const res = await fetch(`${api}/${userId}/folders`);
+            const folders = await res.json();
+            let html = '<h2>Folders</h2><ul>';
+            folders.forEach(f => {
+                html += `<li><button onclick="loadNotes(${f.id})">${f.name}</button></li>`;
+            });
+            html += '</ul>';
+            document.getElementById('folders').innerHTML = html;
+            document.getElementById('notes').innerHTML = '';
+            document.getElementById('note-detail').innerHTML = '';
+        }
+        async function loadNotes(folderId) {
+            const res = await fetch(`/folders/${folderId}/notes`);
+            const notes = await res.json();
+            let html = '<h3>Notes</h3><ul>';
+            notes.forEach(n => {
+                html += `<li><button onclick="loadNote(${n.id})">${n.title}</button></li>`;
+            });
+            html += '</ul>';
+            document.getElementById('notes').innerHTML = html;
+            document.getElementById('note-detail').innerHTML = '';
+        }
+        async function loadNote(noteId) {
+            const res = await fetch(`/notes/${noteId}`);
+            const note = await res.json();
+            let html = `<h4>${note.title}</h4><div><b>Raw:</b><pre>${note.content}</pre></div><div><b>HTML:</b><div class='note-html'>${note.content_html}</div></div>`;
+            document.getElementById('note-detail').innerHTML = html;
+        }
+    </script>
+</body>
+</html>
