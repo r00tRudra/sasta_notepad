@@ -168,6 +168,17 @@ input:focus {
     animation: fadeUp 0.8s ease;
 }
 
+.section-title {
+    margin: 18px 0 10px;
+    font-size: 1.2rem;
+}
+
+.divider {
+    height: 1px;
+    margin: 18px 0 12px;
+    background: var(--outline);
+}
+
 .stack {
     display: grid;
     gap: 12px;
