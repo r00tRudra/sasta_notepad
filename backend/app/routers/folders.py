@@ -50,3 +50,4 @@ async def list_notes(folder_id: int, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Note).where(Note.folder_id == folder_id))
     notes = result.scalars().all()
     return [NoteListItem.model_validate(note) for note in notes]
+

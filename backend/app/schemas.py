@@ -13,6 +13,15 @@ class UserOut(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+class TokenPair(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str
+    expires_in: int
+
+class RefreshRequest(BaseModel):
+    refresh_token: str
+
 class FolderCreate(BaseModel):
     name: str
 

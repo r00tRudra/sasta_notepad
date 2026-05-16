@@ -13,6 +13,8 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 @router.post("/", response_model=UserOut, status_code=201)
 async def create_user(user: UserCreate, db: AsyncSession = Depends(get_db)):
+    if len(user.password.encode("utf-8")) > 72:
+        raise HTTPException(status_code=400, detail="Password must be 72 bytes or fewer.")
     hashed_password = pwd_context.hash(user.password)
     db_user = User(username=user.username, hashed_password=hashed_password)
     db.add(db_user)

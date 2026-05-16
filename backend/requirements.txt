@@ -10,3 +10,4 @@ maturin
 python-multipart
 maturin
 passlib[bcrypt]
+python-jose[cryptography]
