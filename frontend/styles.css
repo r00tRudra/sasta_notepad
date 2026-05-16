@@ -1,54 +1,187 @@
 :root {
   font-family: "Space Grotesk", system-ui, sans-serif;
 }
+body { font-family: "Space Grotesk", system-ui, sans-serif; }
 
-body {
-  font-family: "Space Grotesk", system-ui, sans-serif;
-}
-
+/* ── Background ─────────────────────────────────────── */
 .bg-ink {
   background: radial-gradient(circle at 10% 10%, #1f2937 0%, #0f172a 35%, #020617 100%);
 }
-
 .page-noise {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1;
+  pointer-events: none; z-index: 1;
 }
-
 .orb {
-  position: fixed;
-  width: 360px;
-  height: 360px;
-  border-radius: 999px;
-  filter: blur(0px);
-  opacity: 0.6;
-  z-index: 0;
-  mix-blend-mode: screen;
-  animation: float 12s ease-in-out infinite;
+  position: fixed; width: 360px; height: 360px;
+  border-radius: 999px; filter: blur(80px);
+  opacity: 0.2; z-index: 0; mix-blend-mode: screen;
+  animation: float 12s ease-in-out infinite; pointer-events: none;
+}
+.orb-one { top: -120px; right: -80px; background: radial-gradient(circle, #a3e635 0%, rgba(163,230,53,0) 70%); }
+.orb-two { bottom: -140px; left: -100px; background: radial-gradient(circle, #38bdf8 0%, rgba(56,189,248,0) 70%); animation-delay: -4s; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(20px)} }
+
+/* ── Scrollbar ───────────────────────────────────────── */
+.scrollbar-thin::-webkit-scrollbar        { width: 4px; }
+.scrollbar-thin::-webkit-scrollbar-track  { background: transparent; }
+.scrollbar-thin::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.07); border-radius: 4px; }
+
+/* ── Avatar ──────────────────────────────────────────── */
+.avatar {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: linear-gradient(135deg, #a3e635, #38bdf8);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #0f172a; flex-shrink: 0;
 }
 
-.orb-one {
-  top: -120px;
-  right: -80px;
-  background: radial-gradient(circle, #a3e635 0%, rgba(163, 230, 53, 0) 70%);
+/* ── Icon button ─────────────────────────────────────── */
+.icon-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5); background: transparent;
+  cursor: pointer; transition: all 0.15s; flex-shrink: 0;
 }
+.icon-btn:hover { border-color: #a3e635; color: #a3e635; background: rgba(163,230,53,0.08); }
 
-.orb-two {
-  bottom: -140px;
-  left: -100px;
-  background: radial-gradient(circle, #38bdf8 0%, rgba(56, 189, 248, 0) 70%);
-  animation-delay: -4s;
+/* ── Folder item ─────────────────────────────────────── */
+.folder-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px; border-radius: 10px; cursor: pointer;
+  font-size: 13px; color: rgba(255,255,255,0.55);
+  transition: all 0.15s; border: 1px solid transparent; user-select: none;
 }
+.folder-item:hover  { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.85); }
+.folder-item.active { background: rgba(163,230,53,0.08); border-color: rgba(163,230,53,0.2); color: #a3e635; }
+.folder-item .folder-icon { flex-shrink: 0; opacity: 0.7; }
+.folder-item.active .folder-icon { opacity: 1; }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(20px);
-  }
+/* ── Note item ───────────────────────────────────────── */
+.note-item {
+  padding: 10px 12px; border-radius: 10px;
+  cursor: pointer; border: 1px solid transparent; transition: all 0.15s;
+}
+.note-item:hover  { background: rgba(255,255,255,0.04); }
+.note-item.active { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.1); }
+.note-item-title  { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.note-item-date   { font-size: 10px; color: rgba(255,255,255,0.25); margin-top: 4px; }
+
+/* ── Mode toggle ─────────────────────────────────────── */
+.mode-toggle {
+  display: flex; gap: 2px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px; padding: 3px;
+}
+.mode-btn {
+  font-size: 12px; font-weight: 500;
+  padding: 3px 12px; border-radius: 5px;
+  border: none; cursor: pointer;
+  color: rgba(255,255,255,0.4);
+  background: transparent; transition: all 0.15s;
+  font-family: inherit;
+}
+.mode-btn.active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9); }
+
+/* ── Note title input ────────────────────────────────── */
+.note-title-input {
+  background: transparent;
+  border: none; outline: none;
+  font-size: 22px; font-weight: 600;
+  color: rgba(255,255,255,0.92);
+  font-family: inherit;
+  caret-color: #a3e635;
+}
+.note-title-input::placeholder { color: rgba(255,255,255,0.15); }
+
+/* ── The editor textarea ─────────────────────────────── */
+.note-editor {
+  background: transparent;
+  border: none; outline: none;
+  font-size: 14.5px; line-height: 1.8;
+  color: rgba(255,255,255,0.75);
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
+  caret-color: #a3e635;
+  tab-size: 2;
+}
+.note-editor::placeholder { color: rgba(255,255,255,0.14); }
+
+/* ── Pill buttons ────────────────────────────────────── */
+.pill-btn {
+  padding: 5px 14px; border-radius: 99px; font-size: 12px; font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.65); cursor: pointer; transition: all 0.15s; font-family: inherit;
+}
+.pill-btn:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9); }
+.pill-btn-primary {
+  padding: 5px 16px; border-radius: 99px; font-size: 12px; font-weight: 600;
+  border: none; background: #a3e635; color: #0f172a;
+  cursor: pointer; transition: all 0.15s; font-family: inherit;
+}
+.pill-btn-primary:hover:not(:disabled) { background: #bef264; }
+.pill-btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* ── Modals ──────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(2,6,23,0.75); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+.modal-box {
+  background: #0f172a; border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px; padding: 24px; width: 100%; max-width: 360px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+}
+.modal-input {
+  width: 100%; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+  padding: 9px 12px; font-size: 13px; color: rgba(255,255,255,0.85);
+  font-family: inherit; outline: none; transition: border-color 0.15s; display: block;
+}
+.modal-input:focus { border-color: #a3e635; }
+.modal-input::placeholder { color: rgba(255,255,255,0.25); }
+
+/* ── Prose / preview ─────────────────────────────────── */
+.prose-note { color: rgba(255,255,255,0.78); font-size: 15px; line-height: 1.75; }
+.prose-note h1,.prose-note h2,.prose-note h3,.prose-note h4 { color:#fff; font-weight:600; margin-top:1.5em; margin-bottom:0.4em; line-height:1.3; }
+.prose-note h1{font-size:1.6em} .prose-note h2{font-size:1.3em} .prose-note h3{font-size:1.1em}
+.prose-note p  { margin:0 0 0.9em; }
+.prose-note strong { color:#fff; font-weight:600; }
+.prose-note em { color: rgba(255,255,255,0.7); font-style:italic; }
+.prose-note a  { color:#a3e635; text-decoration:underline; }
+.prose-note code {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 5px; padding: 1px 6px; font-size: 0.87em;
+  font-family: "JetBrains Mono","Fira Code",monospace; color: #a3e635;
+}
+.prose-note pre {
+  background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 16px 20px; overflow-x: auto; margin-bottom: 1em;
+}
+.prose-note pre code { background:transparent; border:none; padding:0; font-size:13px; color:#e2e8f0; }
+.prose-note blockquote {
+  border-left: 3px solid rgba(163,230,53,0.4); padding-left:16px;
+  color: rgba(255,255,255,0.5); margin:0 0 1em; font-style:italic;
+}
+.prose-note ul,.prose-note ol { padding-left:20px; margin-bottom:0.9em; }
+.prose-note li { margin-bottom:0.3em; }
+.prose-note hr { border:none; border-top:1px solid rgba(255,255,255,0.1); margin:1.5em 0; }
+.prose-note table { width:100%; border-collapse:collapse; margin-bottom:1em; font-size:14px; }
+.prose-note th { border-bottom:1px solid rgba(255,255,255,0.15); padding:6px 12px; text-align:left; color:rgba(255,255,255,0.5); font-weight:500; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; }
+.prose-note td { border-bottom:1px solid rgba(255,255,255,0.06); padding:8px 12px; }
+
+/* ── Toast ───────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.85); font-size: 13px; padding: 10px 20px;
+  border-radius: 99px; backdrop-filter: blur(10px); z-index: 100;
+  white-space: nowrap; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  animation: fadeUp 0.2s ease;
+}
+.toast.error { border-color: rgba(251,113,133,0.3); color: #fda4af; }
+@keyframes fadeUp {
+  from { opacity:0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity:1; transform: translateX(-50%) translateY(0); }
 }
