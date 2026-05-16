@@ -285,7 +285,7 @@ deleteNoteBtn.addEventListener("click", async () => {
 newFolderBtn.addEventListener("click", () => {
   folderNameInput.value = "";
   folderModal.classList.remove("hidden");
-  setTimeout(() => folderNameInputfolders/.focus(), 50);
+  setTimeout(() => folderNameInput.focus(), 50);
 });
 folderCancelBtn.addEventListener("click", () => folderModal.classList.add("hidden"));
 folderConfirmBtn.addEventListener("click", createFolder);
@@ -316,6 +316,10 @@ noteConfirmBtn.addEventListener("click", createNote);
 newNoteTitleInput.addEventListener("keydown", e => { if (e.key === "Enter") createNote(); });
 
 async function createNote() {
+  if (!activeFolder) {
+    toast("Select a folder first.", true);
+    return;
+  }
   const title = newNoteTitleInput.value.trim();
   if (!title) return;
   try {
@@ -334,6 +338,11 @@ async function createNote() {
 // ── Logout ────────────────────────────────────────────────
 logoutBtn.addEventListener("click", () => {
   if (isDirty && !confirm("You have unsaved changes. Leave anyway?")) return;
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
+  localStorage.removeItem("token_type");
+  localStorage.removeItem("expires_in");
+  localStorage.removeItem("issued_at");
   window.location.href = "index.html";
 });
 
@@ -381,15 +390,9 @@ async function init() {
     sidebarUsername.textContent = USER_NAME;
     avatarLetter.textContent    = USER_NAME[0].toUpperCase();
     
-    // Try to get user ID - for now use a hardcoded approach or fetch it
-    // This requires the backend to either return user info or a dedicated endpoint
     if (!USER_ID) {
-      try {
-        const user = await api("GET", `/users/1`);
-        USER_ID = user.id;
-      } catch (e) {
-        USER_ID = 1; // fallback
-      }
+      const user = await api("GET", `/users/by-username/${encodeURIComponent(USER_NAME)}`);
+      USER_ID = user.id;
     }
     
     folders = await api("GET", `/users/${USER_ID}/folders`);
