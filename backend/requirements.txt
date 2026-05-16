@@ -1,8 +1,9 @@
-fastapi==0.110.0
-uvicorn==0.29.0
-SQLAlchemy==2.0.29
-aiosqlite==0.20.0
-alembic==1.13.1
-pydantic==2.7.1
-python-dotenv==1.0.1
-mistune==3.0.2
+fastapi
+uvicorn
+SQLAlchemy
+aiosqlite
+alembic
+pydantic
+python-dotenv
+mistune
+maturin
