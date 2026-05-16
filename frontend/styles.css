@@ -3,7 +3,7 @@
 }
 body { font-family: "Space Grotesk", system-ui, sans-serif; }
 
-/* ── Background ─────────────────────────────────────── */
+/* ── Background ─────────────────────────────────────────── */
 .bg-ink {
   background: radial-gradient(circle at 10% 10%, #1f2937 0%, #0f172a 35%, #020617 100%);
 }
@@ -22,12 +22,12 @@ body { font-family: "Space Grotesk", system-ui, sans-serif; }
 .orb-two { bottom: -140px; left: -100px; background: radial-gradient(circle, #38bdf8 0%, rgba(56,189,248,0) 70%); animation-delay: -4s; }
 @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(20px)} }
 
-/* ── Scrollbar ───────────────────────────────────────── */
+/* ── Scrollbar ───────────────────────────────────────────── */
 .scrollbar-thin::-webkit-scrollbar        { width: 4px; }
 .scrollbar-thin::-webkit-scrollbar-track  { background: transparent; }
 .scrollbar-thin::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.07); border-radius: 4px; }
 
-/* ── Avatar ──────────────────────────────────────────── */
+/* ── Avatar ──────────────────────────────────────────────── */
 .avatar {
   width: 34px; height: 34px; border-radius: 10px;
   background: linear-gradient(135deg, #a3e635, #38bdf8);
@@ -35,7 +35,7 @@ body { font-family: "Space Grotesk", system-ui, sans-serif; }
   font-size: 14px; font-weight: 700; color: #0f172a; flex-shrink: 0;
 }
 
-/* ── Icon button ─────────────────────────────────────── */
+/* ── Icon button ─────────────────────────────────────────── */
 .icon-btn {
   display: flex; align-items: center; justify-content: center;
   width: 26px; height: 26px; border-radius: 8px;
@@ -45,7 +45,27 @@ body { font-family: "Space Grotesk", system-ui, sans-serif; }
 }
 .icon-btn:hover { border-color: #a3e635; color: #a3e635; background: rgba(163,230,53,0.08); }
 
-/* ── Folder item ─────────────────────────────────────── */
+/* ── Resize handle ───────────────────────────────────────── */
+.resize-handle {
+  width: 5px;
+  flex-shrink: 0;
+  cursor: col-resize;
+  background: rgba(255,255,255,0.06);
+  position: relative;
+  transition: background 0.2s;
+  z-index: 5;
+}
+.resize-handle::after {
+  content: "";
+  position: absolute;
+  inset: 0 -3px;  /* wider hit area */
+}
+.resize-handle:hover,
+.resize-handle.active {
+  background: rgba(163,230,53,0.35);
+}
+
+/* ── Folder item ─────────────────────────────────────────── */
 .folder-item {
   display: flex; align-items: center; gap: 8px;
   padding: 7px 10px; border-radius: 10px; cursor: pointer;
@@ -57,17 +77,40 @@ body { font-family: "Space Grotesk", system-ui, sans-serif; }
 .folder-item .folder-icon { flex-shrink: 0; opacity: 0.7; }
 .folder-item.active .folder-icon { opacity: 1; }
 
-/* ── Note item ───────────────────────────────────────── */
+/* Drag-over state for folders */
+.folder-item.drag-over {
+  background: rgba(163,230,53,0.14);
+  border-color: rgba(163,230,53,0.5);
+  color: #a3e635;
+  box-shadow: 0 0 0 2px rgba(163,230,53,0.15);
+}
+
+/* ── Note item ───────────────────────────────────────────── */
 .note-item {
   padding: 10px 12px; border-radius: 10px;
   cursor: pointer; border: 1px solid transparent; transition: all 0.15s;
+  user-select: none;
 }
 .note-item:hover  { background: rgba(255,255,255,0.04); }
 .note-item.active { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.1); }
+.note-item.dragging { opacity: 0.35; transform: scale(0.97); }
 .note-item-title  { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .note-item-date   { font-size: 10px; color: rgba(255,255,255,0.25); margin-top: 4px; }
 
-/* ── Mode toggle ─────────────────────────────────────── */
+/* Drag handle hint on note items */
+.note-item::before {
+  content: "⠿";
+  position: absolute;
+  left: -2px;
+  color: rgba(255,255,255,0.12);
+  font-size: 10px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.note-item { position: relative; }
+.note-item:hover::before { opacity: 1; }
+
+/* ── Mode toggle ─────────────────────────────────────────── */
 .mode-toggle {
   display: flex; gap: 2px;
   background: rgba(255,255,255,0.05);
@@ -84,7 +127,7 @@ body { font-family: "Space Grotesk", system-ui, sans-serif; }
 }
 .mode-btn.active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9); }
 
-/* ── Note title input ────────────────────────────────── */
+/* ── Note title input ────────────────────────────────────── */
 .note-title-input {
   background: transparent;
   border: none; outline: none;
@@ -95,7 +138,7 @@ body { font-family: "Space Grotesk", system-ui, sans-serif; }
 }
 .note-title-input::placeholder { color: rgba(255,255,255,0.15); }
 
-/* ── The editor textarea ─────────────────────────────── */
+/* ── The editor textarea ─────────────────────────────────── */
 .note-editor {
   background: transparent;
   border: none; outline: none;
@@ -107,7 +150,7 @@ body { font-family: "Space Grotesk", system-ui, sans-serif; }
 }
 .note-editor::placeholder { color: rgba(255,255,255,0.14); }
 
-/* ── Pill buttons ────────────────────────────────────── */
+/* ── Pill buttons ────────────────────────────────────────── */
 .pill-btn {
   padding: 5px 14px; border-radius: 99px; font-size: 12px; font-weight: 500;
   border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05);
@@ -122,7 +165,7 @@ body { font-family: "Space Grotesk", system-ui, sans-serif; }
 .pill-btn-primary:hover:not(:disabled) { background: #bef264; }
 .pill-btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
 
-/* ── Modals ──────────────────────────────────────────── */
+/* ── Modals ──────────────────────────────────────────────── */
 .modal-backdrop {
   position: fixed; inset: 0; z-index: 50;
   background: rgba(2,6,23,0.75); backdrop-filter: blur(6px);
@@ -142,36 +185,184 @@ body { font-family: "Space Grotesk", system-ui, sans-serif; }
 .modal-input:focus { border-color: #a3e635; }
 .modal-input::placeholder { color: rgba(255,255,255,0.25); }
 
-/* ── Prose / preview ─────────────────────────────────── */
+/* ── Context menu ────────────────────────────────────────── */
+.ctx-menu {
+  position: fixed;
+  z-index: 200;
+  background: rgba(10, 16, 35, 0.97);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 5px;
+  min-width: 178px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 0.5px rgba(255,255,255,0.05);
+  backdrop-filter: blur(16px);
+  animation: ctxFadeIn 0.1s ease;
+}
+@keyframes ctxFadeIn {
+  from { opacity: 0; transform: scale(0.96) translateY(-4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.ctx-menu.hidden { display: none; }
+.ctx-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.72);
+  transition: all 0.1s;
+  user-select: none;
+}
+.ctx-item svg { flex-shrink: 0; opacity: 0.7; }
+.ctx-item:hover {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.95);
+}
+.ctx-item:hover svg { opacity: 1; }
+.ctx-item.ctx-danger { color: rgba(253,164,175,0.8); }
+.ctx-item.ctx-danger:hover { background: rgba(251,113,133,0.12); color: #fda4af; }
+.ctx-sep {
+  height: 1px;
+  background: rgba(255,255,255,0.07);
+  margin: 4px 2px;
+}
+
+/* ── GFM Prose / preview ─────────────────────────────────── */
 .prose-note { color: rgba(255,255,255,0.78); font-size: 15px; line-height: 1.75; }
-.prose-note h1,.prose-note h2,.prose-note h3,.prose-note h4 { color:#fff; font-weight:600; margin-top:1.5em; margin-bottom:0.4em; line-height:1.3; }
-.prose-note h1{font-size:1.6em} .prose-note h2{font-size:1.3em} .prose-note h3{font-size:1.1em}
-.prose-note p  { margin:0 0 0.9em; }
-.prose-note strong { color:#fff; font-weight:600; }
-.prose-note em { color: rgba(255,255,255,0.7); font-style:italic; }
-.prose-note a  { color:#a3e635; text-decoration:underline; }
+
+.prose-note h1,.prose-note h2,.prose-note h3,
+.prose-note h4,.prose-note h5,.prose-note h6 {
+  color: #fff; font-weight: 600;
+  margin-top: 1.6em; margin-bottom: 0.4em; line-height: 1.3;
+}
+.prose-note h1 { font-size: 1.7em; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.3em; }
+.prose-note h2 { font-size: 1.35em; border-bottom: 1px solid rgba(255,255,255,0.07); padding-bottom: 0.25em; }
+.prose-note h3 { font-size: 1.15em; }
+.prose-note h4 { font-size: 1em; }
+.prose-note h5 { font-size: 0.9em; color: rgba(255,255,255,0.7); }
+.prose-note h6 { font-size: 0.85em; color: rgba(255,255,255,0.5); }
+
+.prose-note p  { margin: 0 0 0.9em; }
+.prose-note strong { color: #fff; font-weight: 600; }
+.prose-note em { color: rgba(255,255,255,0.7); font-style: italic; }
+.prose-note del { color: rgba(255,255,255,0.4); text-decoration: line-through; }
+.prose-note a  { color: #a3e635; text-decoration: underline; text-underline-offset: 3px; }
+.prose-note a:hover { color: #bef264; }
+
+/* Inline code */
 .prose-note code {
-  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 5px; padding: 1px 6px; font-size: 0.87em;
   font-family: "JetBrains Mono","Fira Code",monospace; color: #a3e635;
 }
-.prose-note pre {
-  background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px; padding: 16px 20px; overflow-x: auto; margin-bottom: 1em;
-}
-.prose-note pre code { background:transparent; border:none; padding:0; font-size:13px; color:#e2e8f0; }
-.prose-note blockquote {
-  border-left: 3px solid rgba(163,230,53,0.4); padding-left:16px;
-  color: rgba(255,255,255,0.5); margin:0 0 1em; font-style:italic;
-}
-.prose-note ul,.prose-note ol { padding-left:20px; margin-bottom:0.9em; }
-.prose-note li { margin-bottom:0.3em; }
-.prose-note hr { border:none; border-top:1px solid rgba(255,255,255,0.1); margin:1.5em 0; }
-.prose-note table { width:100%; border-collapse:collapse; margin-bottom:1em; font-size:14px; }
-.prose-note th { border-bottom:1px solid rgba(255,255,255,0.15); padding:6px 12px; text-align:left; color:rgba(255,255,255,0.5); font-weight:500; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; }
-.prose-note td { border-bottom:1px solid rgba(255,255,255,0.06); padding:8px 12px; }
 
-/* ── Toast ───────────────────────────────────────────── */
+/* Code blocks — override hljs defaults to fit the theme */
+.prose-note pre {
+  background: #1a1f2e !important;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 0; margin-bottom: 1.2em;
+  overflow: hidden;
+}
+.prose-note pre code {
+  background: transparent !important;
+  border: none !important; padding: 16px 20px !important;
+  font-size: 13px !important; color: #e2e8f0 !important;
+  display: block; overflow-x: auto;
+}
+/* hljs inside prose */
+.prose-note .hljs { background: transparent !important; }
+
+.prose-note blockquote {
+  border-left: 3px solid rgba(163,230,53,0.4); padding-left: 16px;
+  color: rgba(255,255,255,0.5); margin: 0 0 1em; font-style: italic;
+}
+
+/* Lists */
+.prose-note ul,.prose-note ol { padding-left: 22px; margin-bottom: 0.9em; }
+.prose-note li { margin-bottom: 0.3em; }
+.prose-note ol { list-style-type: decimal; }
+.prose-note ul { list-style-type: disc; }
+
+/* Task list (GFM checkboxes) */
+.prose-note ul:has(input[type="checkbox"]) {
+  list-style: none;
+  padding-left: 4px;
+}
+.prose-note li:has(> input[type="checkbox"]) {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 2px 0;
+}
+.prose-note input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 15px; height: 15px;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 4px;
+  background: transparent;
+  flex-shrink: 0;
+  margin-top: 4px;
+  cursor: default;
+  position: relative;
+  transition: all 0.15s;
+}
+.prose-note input[type="checkbox"]:checked {
+  background: #a3e635;
+  border-color: #a3e635;
+}
+.prose-note input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 3px; top: 0px;
+  width: 5px; height: 9px;
+  border: 2px solid #0f172a;
+  border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+/* dim completed task text */
+.prose-note li:has(> input[type="checkbox"]:checked) {
+  color: rgba(255,255,255,0.38);
+  text-decoration: line-through;
+  text-decoration-color: rgba(255,255,255,0.2);
+}
+
+.prose-note hr { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 1.5em 0; }
+
+/* Tables */
+.prose-note table {
+  width: 100%; border-collapse: collapse; margin-bottom: 1.2em;
+  font-size: 14px; border-radius: 8px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.prose-note thead { background: rgba(255,255,255,0.04); }
+.prose-note th {
+  padding: 8px 14px; text-align: left;
+  color: rgba(255,255,255,0.5); font-weight: 500;
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.prose-note td { border-bottom: 1px solid rgba(255,255,255,0.06); padding: 9px 14px; }
+.prose-note tr:last-child td { border-bottom: none; }
+.prose-note tr:hover td { background: rgba(255,255,255,0.025); }
+
+/* Images */
+.prose-note img {
+  max-width: 100%; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  margin: 0.5em 0;
+}
+
+/* Nested blockquotes */
+.prose-note blockquote blockquote {
+  border-left-color: rgba(56,189,248,0.4);
+  margin-top: 0.5em;
+}
+
+/* ── Toast ───────────────────────────────────────────────── */
 .toast {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
   background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.1);

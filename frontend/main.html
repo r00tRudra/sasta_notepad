@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Highlight.js theme (atom-one-dark) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -18,7 +20,7 @@
     <div class="relative z-10 flex h-screen">
 
       <!-- ── SIDEBAR: Folders ── -->
-      <aside class="sidebar flex flex-col w-64 shrink-0 border-r border-white/10 bg-white/5 backdrop-blur-xl">
+      <aside id="sidebar-panel" class="sidebar flex flex-col shrink-0 bg-white/5 backdrop-blur-xl" style="width:256px">
 
         <div class="px-5 pt-6 pb-4 border-b border-white/10">
           <div class="flex items-center gap-3">
@@ -47,8 +49,11 @@
         </div>
       </aside>
 
+      <!-- ── RESIZE HANDLE 1 (between sidebar and notes) ── -->
+      <div id="resize-1" class="resize-handle" title="Drag to resize"></div>
+
       <!-- ── NOTES LIST ── -->
-      <div class="flex flex-col w-60 shrink-0 border-r border-white/10 bg-black/10 backdrop-blur-xl">
+      <div id="notes-panel" class="flex flex-col shrink-0 bg-black/10 backdrop-blur-xl" style="width:240px">
         <div class="flex items-center justify-between px-5 pt-6 pb-4 border-b border-white/10">
           <h2 id="folder-title" class="text-sm font-semibold text-slate-200 truncate">Select a folder</h2>
           <button id="new-note-btn" class="icon-btn hidden" title="New note">
@@ -60,6 +65,9 @@
         </div>
       </div>
 
+      <!-- ── RESIZE HANDLE 2 (between notes and editor) ── -->
+      <div id="resize-2" class="resize-handle" title="Drag to resize"></div>
+
       <!-- ── MAIN EDITOR AREA ── -->
       <main class="flex-1 flex flex-col overflow-hidden">
 
@@ -67,6 +75,7 @@
         <div id="empty-state" class="flex flex-1 flex-col items-center justify-center gap-3 text-center px-8">
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-600 mb-2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
           <p class="text-slate-500 text-sm">Pick a folder and open a note,<br/>or hit <span class="text-slate-300">+</span> to create one.</p>
+          <p class="text-slate-600 text-xs mt-1">Drag notes onto folders to copy them · Right-click for more options</p>
         </div>
 
         <!-- Note workspace -->
@@ -99,34 +108,37 @@
             <p id="note-meta" class="text-xs text-slate-500 pb-3 mt-1"></p>
           </div>
 
-          <!-- Write mode: raw textarea -->
+          <!-- Write mode -->
           <div id="write-panel" class="flex-1 flex overflow-hidden">
             <textarea
               id="note-editor"
               spellcheck="true"
-              placeholder="Start writing… markdown is fully supported.
+              placeholder="Start writing… GitHub-flavoured markdown is fully supported.
 
-# Heading 1
-## Heading 2
+# Heading 1  /  ## H2  /  ### H3
 
-**bold text**, *italic text*, `inline code`
+**bold**, *italic*, ~~strikethrough~~, `inline code`
 
 \`\`\`python
 def hello():
     print('Hello world')
 \`\`\`
 
-> A blockquote
+> Blockquote
 
-- item one
-- item two
+- [ ] Task item
+- [x] Completed task
+
+| Col 1 | Col 2 |
+|-------|-------|
+| A     | B     |
 
 ---"
               class="note-editor flex-1 w-full resize-none scrollbar-thin px-8 py-5"
             ></textarea>
           </div>
 
-          <!-- Preview mode: rendered markdown -->
+          <!-- Preview mode -->
           <div id="preview-panel" class="hidden flex-1 overflow-y-auto px-8 py-6 scrollbar-thin">
             <div id="preview-content" class="prose-note max-w-3xl"></div>
           </div>
@@ -147,7 +159,7 @@ def hello():
       </div>
     </div>
 
-    <!-- MODAL: New Note — title only, content goes in the editor -->
+    <!-- MODAL: New Note -->
     <div id="note-modal" class="modal-backdrop hidden">
       <div class="modal-box">
         <h3 class="text-sm font-semibold text-slate-100 mb-1">New Note</h3>
@@ -163,6 +175,10 @@ def hello():
     <!-- TOAST -->
     <div id="toast" class="toast hidden"></div>
 
+    <!-- Marked.js (GFM markdown parser) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+    <!-- Highlight.js (syntax highlighting) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="main.js"></script>
   </body>
 </html>
