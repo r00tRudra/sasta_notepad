@@ -9,6 +9,7 @@ from passlib.context import CryptContext
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+router = APIRouter(prefix="/users", tags=["users"])
 
 @router.post("/", response_model=UserOut, status_code=201)
 async def create_user(user: UserCreate, db: AsyncSession = Depends(get_db)):

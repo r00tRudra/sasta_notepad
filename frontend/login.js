@@ -1,3 +1,5 @@
+const API_BASE = 'http://localhost:8000';
+
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const username = document.getElementById('username').value;
@@ -10,7 +12,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     formBody.append('password', password);
 
     try {
-        const response = await fetch('http://localhost:8000/login', {
+        const response = await fetch(`${API_BASE}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -21,7 +23,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         if (response.ok) {
             messageDiv.textContent = 'Login successful!';
             localStorage.setItem('token', data.access_token);
-            // Redirect or load app
+            window.location.href = 'index.html';
         } else {
             messageDiv.textContent = data.detail || 'Login failed.';
         }

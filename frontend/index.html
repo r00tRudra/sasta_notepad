@@ -7,21 +7,45 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Sasta Notepad</h1>
-        <div>
-            <label>User ID: <input type="number" id="userId" value="1"></label>
-            <button onclick="loadFolders()">Load Folders</button>
-        </div>
-        <div id="folders"></div>
-        <div id="notes"></div>
-        <div id="note-detail"></div>
+    <div class="shell">
+        <header class="hero">
+            <div>
+                <p class="eyebrow">Sasta Notepad</p>
+                <h1>Capture ideas fast, keep them tidy.</h1>
+                <p class="subhead">Browse folders, open notes, and preview rich content without leaving the page.</p>
+            </div>
+            <div class="hero-card">
+                <label class="field">
+                    <span>User ID</span>
+                    <input type="number" id="userId" value="1">
+                </label>
+                <button class="primary" onclick="loadFolders()">Load Folders</button>
+                <p class="helper">Tip: Login first to save your token for protected routes.</p>
+            </div>
+        </header>
+
+        <main class="app-grid">
+            <section class="panel" id="folders"></section>
+            <section class="panel" id="notes"></section>
+            <section class="panel" id="note-detail"></section>
+        </main>
     </div>
     <script>
-        const api = '/users';
+        const API_BASE = 'http://localhost:8000';
+        const api = `${API_BASE}/users`;
+
+        function buildAuthHeaders() {
+            const token = localStorage.getItem('token');
+            return token ? { Authorization: `Bearer ${token}` } : {};
+        }
+
         async function loadFolders() {
             const userId = document.getElementById('userId').value;
-            const res = await fetch(`${api}/${userId}/folders`);
+            const res = await fetch(`${api}/${userId}/folders`, {
+                headers: {
+                    ...buildAuthHeaders()
+                }
+            });
             const folders = await res.json();
             let html = '<h2>Folders</h2><ul>';
             folders.forEach(f => {
@@ -33,7 +57,11 @@
             document.getElementById('note-detail').innerHTML = '';
         }
         async function loadNotes(folderId) {
-            const res = await fetch(`/folders/${folderId}/notes`);
+            const res = await fetch(`${API_BASE}/folders/${folderId}/notes`, {
+                headers: {
+                    ...buildAuthHeaders()
+                }
+            });
             const notes = await res.json();
             let html = '<h3>Notes</h3><ul>';
             notes.forEach(n => {
@@ -44,7 +72,11 @@
             document.getElementById('note-detail').innerHTML = '';
         }
         async function loadNote(noteId) {
-            const res = await fetch(`/notes/${noteId}`);
+            const res = await fetch(`${API_BASE}/notes/${noteId}`, {
+                headers: {
+                    ...buildAuthHeaders()
+                }
+            });
             const note = await res.json();
             let html = `<h4>${note.title}</h4><div><b>Raw:</b><pre>${note.content}</pre></div><div><b>HTML:</b><div class='note-html'>${note.content_html}</div></div>`;
             document.getElementById('note-detail').innerHTML = html;

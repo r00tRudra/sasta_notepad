@@ -7,16 +7,25 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Login</button>
-        </form>
-        <div id="loginMessage"></div>
+    <div class="shell center">
+        <div class="auth-card">
+            <p class="eyebrow">Welcome back</p>
+            <h2>Sign in to continue</h2>
+            <p class="subhead">Use the same credentials you registered with in the backend.</p>
+            <form id="loginForm" class="stack">
+                <label class="field" for="username">
+                    <span>Username</span>
+                    <input type="text" id="username" name="username" required>
+                </label>
+                <label class="field" for="password">
+                    <span>Password</span>
+                    <input type="password" id="password" name="password" required>
+                </label>
+                <button class="primary" type="submit">Login</button>
+            </form>
+            <div id="loginMessage" class="status"></div>
+            <a class="link" href="index.html">Back to notes</a>
+        </div>
     </div>
     <script src="login.js"></script>
 </body>
