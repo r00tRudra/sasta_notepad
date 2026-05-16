@@ -1,15 +1,19 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+
 from ..models import User, Folder
 from ..schemas import UserCreate, UserOut, FolderOut
 from ..dependencies import get_db
+from passlib.context import CryptContext
 
-router = APIRouter(prefix="/users", tags=["users"])
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @router.post("/", response_model=UserOut, status_code=201)
 async def create_user(user: UserCreate, db: AsyncSession = Depends(get_db)):
-    db_user = User(username=user.username)
+    hashed_password = pwd_context.hash(user.password)
+    db_user = User(username=user.username, hashed_password=hashed_password)
     db.add(db_user)
     try:
         await db.commit()

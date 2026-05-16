@@ -4,6 +4,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class UserCreate(BaseModel):
     username: str
+    password: str
 
 class UserOut(BaseModel):
     id: int
