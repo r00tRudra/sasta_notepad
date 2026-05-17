@@ -10,8 +10,9 @@ python-multipart
 maturin
 passlib[bcrypt]
 python-jose[cryptography]
-bcrypt
+bcrypt<4
 pytest
 pytest-asyncio
 httpx
 asyncpg
+psycopg2-binary

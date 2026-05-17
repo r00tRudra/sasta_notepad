@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "https://sasta-notepad.onrender.com";
 
 const form = document.getElementById("auth-form");
 const loginTab = document.getElementById("login-tab");
@@ -16,7 +16,7 @@ function setStatus(message, isError = false) {
 
 function formatAuthError(error) {
   if (error instanceof TypeError && error.message === "Failed to fetch") {
-    return `Cannot reach the API at ${API_BASE_URL}. Make sure the backend is running and open the frontend at http://localhost:3000.`;
+    return `Cannot reach the API at ${API_BASE_URL}. Make sure the deployed backend is running.`;
   }
   return error?.message || "Something went wrong.";
 }
@@ -94,7 +94,7 @@ form.addEventListener("submit", async (event) => {
   }
 
   if (window.location.protocol === "file:") {
-    setStatus("Open this page at http://localhost:3000 so the API calls work.", true);
+    setStatus("Open this page from the deployed frontend so the API calls work.", true);
     return;
   }
 
