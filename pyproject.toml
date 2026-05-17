@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sasta-notepad"
+version = "0.1.0"
+description = "FastAPI backend and frontend for Sasta Notepad"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "fastapi",
+  "uvicorn",
+  "SQLAlchemy",
+  "alembic",
+  "pydantic",
+  "python-dotenv",
+  "mistune",
+  "maturin",
+  "python-multipart",
+  "passlib[bcrypt]",
+  "python-jose[cryptography]",
+  "bcrypt<4",
+  "pytest",
+  "pytest-asyncio",
+  "httpx",
+  "asyncpg",
+  "psycopg2-binary",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
