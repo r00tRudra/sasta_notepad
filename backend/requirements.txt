@@ -15,3 +15,4 @@ bcrypt
 pytest
 pytest-asyncio
 httpx
+asyncpg
