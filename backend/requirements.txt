@@ -1,7 +1,6 @@
 fastapi
 uvicorn
 SQLAlchemy
-aiosqlite
 alembic
 pydantic
 python-dotenv
@@ -15,3 +14,4 @@ bcrypt
 pytest
 pytest-asyncio
 httpx
+asyncpg
