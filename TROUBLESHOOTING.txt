@@ -1,0 +1,24 @@
+What went wrong and how it was fixed
+
+1) Missing database tables
+   - Symptom: login/register failed with "sqlite3.OperationalError: no such table: users".
+   - Cause: The database schema was never created, so the users table did not exist.
+   - Fix: Initialize Alembic, wire it to the model metadata, generate a migration, and run it.
+
+2) Empty migration
+   - Symptom: Alembic "init" migration created no tables (upgrade() was empty).
+   - Cause: Alembic did not import the models, so autogenerate saw no metadata.
+   - Fix: Import the models in alembic/env.py (so Base.metadata includes all tables), then run
+     "alembic revision --autogenerate" again and apply "alembic upgrade head".
+
+3) bcrypt version mismatch
+   - Symptom: passlib threw "AttributeError: module 'bcrypt' has no attribute '__about__'".
+   - Cause: bcrypt 4.x removed __about__, which passlib expected.
+   - Fix: Pin bcrypt to <4 (e.g., "bcrypt<4") or upgrade passlib to a compatible version.
+
+4) bcrypt password length
+   - Symptom: "ValueError: password cannot be longer than 72 bytes" on hashing.
+   - Cause: bcrypt truncates/does not allow passwords over 72 bytes.
+   - Fix: Validate password length before hashing and return a 400 error.
+
+After these fixes, registration/login should work as expected.
