@@ -8,7 +8,7 @@ from ..services.folder_service import delete_folder
 
 router = APIRouter(prefix="/folders", tags=["folders"])
 
-@router.post("/users/{user_id}/folders", response_model=FolderOut, status_code=201)
+@router.post("/{user_id}/folders", response_model=FolderOut, status_code=201)
 async def create_folder(user_id: int, folder: FolderCreate, db: AsyncSession = Depends(get_db)):
     user = await db.get(User, user_id)
     if not user:

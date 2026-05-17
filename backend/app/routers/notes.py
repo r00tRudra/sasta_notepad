@@ -8,7 +8,7 @@ from ..services.notes_service import create_note, update_note
 
 router = APIRouter(prefix="/notes", tags=["notes"])
 
-@router.post("/folders/{folder_id}/notes", response_model=NoteOut, status_code=201)
+@router.post("/{folder_id}/notes", response_model=NoteOut, status_code=201)
 async def create_note_endpoint(folder_id: int, note: NoteCreate, db: AsyncSession = Depends(get_db)):
     folder = await db.get(Folder, folder_id)
     if not folder:

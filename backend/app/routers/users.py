@@ -33,6 +33,14 @@ async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found.")
     return user
 
+@router.get("/by-username/{username}", response_model=UserOut)
+async def get_user_by_username(username: str, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(User).where(User.username == username))
+    user = result.scalars().first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+    return user
+
 @router.get("/{user_id}/folders", response_model=list[FolderOut])
 async def list_folders(user_id: int, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Folder).where(Folder.user_id == user_id))

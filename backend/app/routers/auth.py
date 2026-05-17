@@ -71,7 +71,10 @@ async def refresh_token(payload: RefreshRequest, db: AsyncSession = Depends(get_
     db_token = result.scalars().first()
     if not db_token or db_token.revoked_at is not None:
         raise HTTPException(status_code=fastapi_status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token")
-    if db_token.expires_at < datetime.now(timezone.utc):
+    expires_at = db_token.expires_at
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+    if expires_at < datetime.now(timezone.utc):
         raise HTTPException(status_code=fastapi_status.HTTP_401_UNAUTHORIZED, detail="Refresh token expired")
     user = await db.get(User, db_token.user_id)
     if not user:
