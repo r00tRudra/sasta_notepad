@@ -32,13 +32,4 @@ dependencies = [
 asyncio_mode = "auto"
 
 [tool.vercel]
-entrypoint = "main.py"
-
-[tool.setuptools]
-package-dir = {"" = "src"}
-packages = ["sasta_notepad"]
-include-package-data = false
-
-[tool.setuptools.packages.find]
-where = ["src"]
-exclude = ["backend*", "frontend*", "layers*"]
+entrypoint = "api.app:app"
