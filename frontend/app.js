@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://sasta-notepad.onrender.com";
+const API_BASE_URL = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) || "https://sasta-notepad-git-main-rudras-projects-920044f9.vercel.app";
 
 const form = document.getElementById("auth-form");
 const loginTab = document.getElementById("login-tab");
