@@ -35,6 +35,6 @@ asyncio_mode = "auto"
 entrypoint = "main.py"
 
 [tool.setuptools]
-packages = []
-py-modules = []
+package-dir = {"" = "src"}
+packages = ["sasta_notepad"]
 include-package-data = false
