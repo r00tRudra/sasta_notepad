@@ -33,6 +33,4 @@ Thumbs.db
 *.tmp
 TROUBLESHOOTING.txt
 
-# Allow committing the project SQLite DB and the troubleshooting file
 !/backend/app.db
-!TROUBLESHOOTING.txt
