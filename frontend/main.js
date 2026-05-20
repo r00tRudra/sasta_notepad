@@ -1,4 +1,4 @@
-const API = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) || "https://sasta-notepad-git-main-rudras-projects-920044f9.vercel.app";
+const API = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) ;//|| "https://sasta-notepad.vercel.app/";
 
 // ── JWT decode ────────────────────────────────────────────
 function getUserFromToken() {

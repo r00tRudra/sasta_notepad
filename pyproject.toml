@@ -32,4 +32,4 @@ dependencies = [
 asyncio_mode = "auto"
 
 [tool.vercel]
-entrypoint = "api.app:app"
+entrypoint = "api.app.main:app"
