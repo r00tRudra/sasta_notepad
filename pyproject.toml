@@ -33,3 +33,10 @@ asyncio_mode = "auto"
 
 [tool.vercel]
 entrypoint = "api.app.main:app"
+
+[tool.setuptools]
+package-dir = {"" = "backend"}
+
+[tool.setuptools.packages.find]
+where = ["backend"]
+include = ["app", "app.*"]
