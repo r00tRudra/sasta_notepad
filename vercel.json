@@ -2,14 +2,14 @@
   "framework": "fastapi",
   "builds": [
     {
-      "src": "api/app.py",
+      "src": "backend/app.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "api/app.py"
+      "dest": "backend/app.py"
     }
   ]
 }
