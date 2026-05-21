@@ -40,3 +40,11 @@ package-dir = {"" = "backend"}
 [tool.setuptools.packages.find]
 where = ["backend"]
 include = ["app", "app.*"]
+exclude = [
+  "frontend",
+  "frontend.*",
+  "alembic",
+  "alembic.*",
+  "__pycache__",
+  "__pycache__.*",
+]
